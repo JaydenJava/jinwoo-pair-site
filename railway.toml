@@ -1,0 +1,49 @@
+# Railway configuration file
+# This file replaces railway.json for Railway.app deployment
+
+[build]
+  builder = "nixpacks"
+  buildCommand = "npm install"
+
+[deploy]
+  startCommand = "npm start"
+  healthcheckPath = "/health"
+  healthcheckTimeout = 60
+  restartPolicyType = "ON_FAILURE"
+  restartPolicyMaxRetries = 10
+
+[[services]]
+  type = "web"
+  name = "jinwoo-xmd"
+  port = 3000
+  env = { NODE_ENV = "production" }
+  
+  [services.healthcheck]
+    path = "/health"
+    timeout = 60
+  
+  [services.autoscaling]
+    min = 1
+    max = 1
+    targetCpu = 70
+    targetMemory = 300
+  
+  [services.restart]
+    enabled = true
+    policy = "on-failure"
+    maxRetries = 10
+
+# Environment variables (can be set in Railway dashboard)
+[environments]
+  [environments.production]
+    PORT = "3000"
+    NODE_ENV = "production"
+    
+  [environments.development]
+    PORT = "3000"
+    NODE_ENV = "development"
+
+# Deployment hooks (optional)
+[hooks]
+  preDeploy = "echo 'Starting deployment of JINWOO-XMD...'"
+  postDeploy = "echo 'Deployment completed successfully!'"

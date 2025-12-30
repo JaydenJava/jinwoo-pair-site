@@ -1,0 +1,177 @@
+# ============================================
+# JINWOO-XMD Git Ignore File
+# ============================================
+# This file tells Git which files to ignore
+# REQUIRED for proper Railway deployment
+# ============================================
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Session storage
+temp/
+sessions/
+*.json
+*.session
+creds.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output
+
+# Logs
+logs
+*.log
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data for Railway
+.railway/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+.cache/
+
+# Build artifacts
+dist/
+build/
+.out/
+.next/
+
+# Package files
+*.tgz
+
+# System files
+.DocumentRevisions-V100
+.fseventsd
+.SyncService
+.com.apple.timemachine.supported
+.AppleDouble
+.LSOverride
+.AppleDB
+.metadata_never_index
+.com.apple.IntlDataMigration.owner
+.com.apple.IntlDataMigration.suggested
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Railway specific
+.railway.json
+railway.json
+railwaytoml.txt
+
+# Test files
+__tests__/
+__mocks__/
+test.js
+*.test.js
+*.spec.js
+
+# ============================================
+# IMPORTANT: Do NOT ignore these files:
+# ============================================
+# !package.json
+# !index.js
+# !gen-id.js
+# !pair.js
+# !qr.js
+# !mega.js
+# !railway.toml
+# !README.md
+# !main.html
+# !pair.html
+# !qr.html
+# !.env.example
+# !.gitignore
+# ============================================
+
+# Custom rules for JINWOO-XMD
+# Keep these in sync with your code
+# 1. Temporary session files (auto-cleaned)
+/temp/**/*
+!/.gitkeep
+
+# 2. Environment-specific files
+config/local.json
+config/staging.json
+config/production.json
+
+# 3. Uploads (if any in future)
+uploads/
+media/
+
+# 4. Backup files
+*.bak
+*.backup
+
+# 5. Compiled files
+*.class
+*.exe
+*.dll
+*.so
+*.dylib
+
+# 6. Distribution files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# ============================================
+# Railway Deployment Notes:
+# ============================================
+# Railway will:
+# 1. Install dependencies from package.json
+# 2. Run the build command (if any)
+# 3. Start the app using npm start
+# 4. Use the railway.toml configuration
+#
+# Files ignored here will NOT be uploaded to Railway
+# This keeps your deployment clean and secure
+# ============================================

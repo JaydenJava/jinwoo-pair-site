@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JINWOO-XMD • QR SCANNER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+          --deep-cobalt: #0a1128;
+          --electric-cyan: #00eeff;
+          --violet-glow: #6a5acd;
+          --black-silhouette: #0a0a0f;
+          --gray-purple: #8a7f9e;
+          --lavender-white: #e6e6fa;
+          --red-orange: #ff4500;
+          --fiery-yellow: #ffcc00;
+          --weapon-red: #ff3300;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--deep-cobalt);
+            background-image: url('https://files.catbox.moe/x1onpj.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Minimal overlay for background visibility */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 17, 40, 0.15);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+        }
+        
+        .qr-card {
+            background: rgba(10, 10, 15, 0.65);
+            border-radius: 12px;
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(0, 238, 255, 0.25);
+            box-shadow: 
+                0 0 20px rgba(0, 238, 255, 0.15),
+                inset 0 0 20px rgba(106, 90, 205, 0.1),
+                0 8px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .qr-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--red-orange), var(--fiery-yellow), var(--electric-cyan));
+            z-index: 2;
+        }
+        
+        .header {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--electric-cyan);
+            filter: drop-shadow(0 0 8px var(--electric-cyan));
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--electric-cyan), var(--lavender-white));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0, 238, 255, 0.4);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .card-title {
+            color: var(--lavender-white);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        
+        .card-subtitle {
+            color: var(--gray-purple);
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+        
+        .qr-container {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(20, 20, 30, 0.7);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 238, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 238, 255, 0.1);
+        }
+        
+        .qr-image {
+            width: 240px;
+            height: 240px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .qr-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 238, 255, 0.2);
+        }
+        
+        .timer-section {
+            margin: 20px 0;
+        }
+        
+        .timer-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--gray-purple);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .timer-header i {
+            color: var(--electric-cyan);
+        }
+        
+        .progress-container {
+            background: rgba(30, 30, 45, 0.6);
+            border-radius: 8px;
+            padding: 6px;
+            border: 1px solid rgba(0, 238, 255, 0.2);
+            margin-bottom: 8px;
+        }
+        
+        progress {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            appearance: none;
+            border: none;
+        }
+        
+        progress::-webkit-progress-bar {
+            background-color: rgba(10, 14, 28, 0.8);
+            border-radius: 5px;
+        }
+        
+        progress::-webkit-progress-value {
+            background: linear-gradient(90deg, var(--red-orange), var(--fiery-yellow), var(--electric-cyan));
+            border-radius: 5px;
+            transition: width 1s linear;
+        }
+        
+        progress::-moz-progress-bar {
+            background: linear-gradient(90deg, var(--red-orange), var(--fiery-yellow), var(--electric-cyan));
+            border-radius: 5px;
+        }
+        
+        .timer-display {
+            color: var(--electric-cyan);
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-top: 5px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 6px rgba(0, 238, 255, 0.5);
+        }
+        
+        .status-message {
+            color: var(--lavender-white);
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            background: rgba(30, 30, 45, 0.6);
+            border-left: 3px solid var(--electric-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .status-message.expired {
+            border-left-color: var(--red-orange);
+            background: rgba(255, 69, 0, 0.1);
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            letter-spacing: 0.5px;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--red-orange) 0%, var(--fiery-yellow) 100%);
+            color: var(--black-silhouette);
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--weapon-red) 0%, var(--fiery-yellow) 100%);
+            box-shadow: 0 6px 18px rgba(255, 69, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: rgba(30, 30, 45, 0.7);
+            color: var(--electric-cyan);
+            border: 1px solid rgba(0, 238, 255, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(0, 238, 255, 0.1);
+            border-color: var(--electric-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 238, 255, 0.2);
+        }
+        
+        .instructions {
+            background: rgba(30, 30, 45, 0.4);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            border-left: 3px solid var(--violet-glow);
+        }
+        
+        .instructions h4 {
+            color: var(--lavender-white);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .instructions h4 i {
+            color: var(--electric-cyan);
+        }
+        
+        .instructions ul {
+            text-align: left;
+            padding-left: 15px;
+        }
+        
+        .instructions li {
+            color: var(--gray-purple);
+            margin-bottom: 5px;
+            line-height: 1.3;
+            font-size: 0.8rem;
+            padding-left: 3px;
+        }
+        
+        .instructions li::marker {
+            color: var(--electric-cyan);
+        }
+        
+        .footer {
+            text-align: center;
+            color: var(--gray-purple);
+            margin-top: 15px;
+            font-size: 0.8rem;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .footer-brand {
+            color: var(--electric-cyan);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 3px;
+            display: block;
+            text-shadow: 0 0 6px rgba(0, 238, 255, 0.5);
+            font-family: 'Arial', sans-serif;
+            font-size: 1rem;
+        }
+        
+        /* QR corner decorations */
+        .qr-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: var(--electric-cyan);
+            border-style: solid;
+        }
+        
+        .qr-corner.tl {
+            top: 8px;
+            left: 8px;
+            border-width: 2px 0 0 2px;
+        }
+        
+        .qr-corner.tr {
+            top: 8px;
+            right: 8px;
+            border-width: 2px 2px 0 0;
+        }
+        
+        .qr-corner.bl {
+            bottom: 8px;
+            left: 8px;
+            border-width: 0 0 2px 2px;
+        }
+        
+        .qr-corner.br {
+            bottom: 8px;
+            right: 8px;
+            border-width: 0 2px 2px 0;
+        }
+        
+        @media (max-width: 500px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .qr-card {
+                padding: 15px;
+            }
+            
+            .qr-image {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .logo-text {
+                font-size: 1.5rem;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="qr-card">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-qrcode logo-icon"></i>
+                    <div class="logo-text">JINWOO-XMD</div>
+                </div>
+                <h1 class="card-title">QR CONNECTION</h1>
+                <p class="card-subtitle">Scan this code with your device to establish a secure link</p>
+            </div>
+            
+            <div class="qr-container">
+                <div class="qr-corner tl"></div>
+                <div class="qr-corner tr"></div>
+                <div class="qr-corner bl"></div>
+                <div class="qr-corner br"></div>
+                <img id="qr-image" src="/server" alt="QR CODE" class="qr-image">
+            </div>
+            
+            <div class="timer-section">
+                <div class="timer-header">
+                    <i class="fas fa-clock"></i> Code Expires In:
+                </div>
+                <div class="progress-container">
+                    <progress value="0" max="30" id="progressBar"></progress>
+                </div>
+                <div class="timer-display" id="timerDisplay">30 seconds</div>
+            </div>
+            
+            <div id="statusMessage" class="status-message">
+                <i class="fas fa-sync-alt fa-spin"></i> QR Code Active - Scan Now
+            </div>
+            
+            <div class="action-buttons">
+                <a href="javascript:history.go(0)" class="btn btn-primary">
+                    <i class="fas fa-redo"></i> New QR
+                </a>
+                <a href="pair.html" class="btn btn-secondary">
+                    <i class="fas fa-key"></i> Pair Code
+                </a>
+            </div>
+            
+            <div class="instructions">
+                <h4><i class="fas fa-info-circle"></i> Scanning Instructions:</h4>
+                <ul>
+                    <li>Open WhatsApp on your mobile device</li>
+                    <li>Navigate to Settings → Linked Devices</li>
+                    <li>Tap "Link a Device" and scan this QR code</li>
+                    <li>Wait for secure connection confirmation</li>
+                </ul>
+            </div>
+            
+            <div class="footer">
+                <div>ENCRYPTED CONNECTION SYSTEM</div>
+                <div class="footer-brand">Pᴏᴡᴇʀᴇᴅ ʙʏ Jᴀʏᴅᴇɴ Jᴀᴠᴀ</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var timeleft = 30;
+        var downloadTimer = setInterval(function () {
+            if (timeleft <= 0) {
+                clearInterval(downloadTimer);
+                document.getElementById("progressBar").style.display = "none";
+                document.getElementById("timerDisplay").innerHTML = "EXPIRED";
+                document.getElementById("timerDisplay").style.color = "var(--red-orange)";
+                document.getElementById("statusMessage").innerHTML = '<i class="fas fa-exclamation-circle"></i> QR Code Expired';
+                document.getElementById("statusMessage").classList.add("expired");
+                
+                // Dim the QR code
+                document.querySelector(".qr-image").style.opacity = "0.6";
+                document.querySelector(".qr-image").style.filter = "grayscale(50%)";
+            } else {
+                document.getElementById("progressBar").value = 30 - timeleft;
+                document.getElementById("timerDisplay").innerHTML = timeleft + " second" + (timeleft !== 1 ? "s" : "");
+                timeleft -= 1;
+                
+                // Visual warning when time is low
+                if (timeleft < 10) {
+                    document.getElementById("timerDisplay").style.color = "var(--fiery-yellow)";
+                    document.getElementById("statusMessage").innerHTML = '<i class="fas fa-exclamation-triangle"></i> Expiring Soon - Scan Quickly!';
+                }
+            }
+        }, 1000);
+        
+        // QR image interaction
+        const qrImage = document.getElementById('qr-image');
+        qrImage.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.02)';
+            this.style.boxShadow = '0 8px 20px rgba(0, 238, 255, 0.2)';
+        });
+        
+        qrImage.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+            this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.3)';
+        });
+        
+        // Simulate QR code refresh every 30 seconds
+        setTimeout(function() {
+            if (timeleft > 0) {
+                qrImage.src = '/server?' + new Date().getTime();
+                console.log('QR code refreshed (simulated)');
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

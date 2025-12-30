@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JINWOO-XMD • MAIN PORTAL</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --deep-cobalt: #0a1128;
+      --electric-cyan: #00eeff;
+      --violet-glow: #6a5acd;
+      --black-silhouette: #0a0a0f;
+      --gray-purple: #8a7f9e;
+      --lavender-white: #e6e6fa;
+      --red-orange: #ff4500;
+      --fiery-yellow: #ffcc00;
+      --weapon-red: #ff3300;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+    }
+    
+    body {
+      background: var(--deep-cobalt);
+      background-image: url('https://files.catbox.moe/x1onpj.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--lavender-white);
+      position: relative;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 17, 40, 0.2);
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .container {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+    }
+    
+    .header {
+      margin-bottom: 25px;
+      text-align: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+    
+    .logo-icon {
+      font-size: 2.5rem;
+      color: var(--electric-cyan);
+      filter: drop-shadow(0 0 10px var(--electric-cyan));
+    }
+    
+    .logo-text {
+      font-size: 2.2rem;
+      font-weight: 900;
+      background: linear-gradient(to right, var(--electric-cyan), var(--lavender-white));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 15px rgba(0, 238, 255, 0.4);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    
+    .tagline {
+      color: var(--gray-purple);
+      font-size: 1.1rem;
+      margin-top: 5px;
+      letter-spacing: 2px;
+      opacity: 0;
+      animation: fadeIn 2s 0.5s forwards;
+    }
+    
+    .portal-card {
+      background: rgba(10, 10, 15, 0.7);
+      border-radius: 12px;
+      padding: 25px 20px;
+      width: 100%;
+      border: 1px solid rgba(0, 238, 255, 0.25);
+      box-shadow: 
+        0 0 25px rgba(0, 238, 255, 0.15),
+        inset 0 0 25px rgba(106, 90, 205, 0.1),
+        0 10px 30px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      margin-bottom: 20px;
+    }
+    
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .portal-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: rgba(30, 30, 45, 0.8);
+      border-radius: 10px;
+      border: 1px solid rgba(0, 238, 255, 0.3);
+      color: var(--lavender-white);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.5px;
+    }
+    
+    .portal-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 238, 255, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .portal-btn:hover {
+      background: rgba(40, 40, 60, 0.9);
+      border-color: var(--electric-cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px rgba(0, 238, 255, 0.2);
+    }
+    
+    .portal-btn:hover::before {
+      left: 100%;
+    }
+    
+    .portal-btn.primary {
+      background: linear-gradient(135deg, var(--red-orange) 0%, var(--fiery-yellow) 100%);
+      color: var(--black-silhouette);
+      border: none;
+      font-weight: 700;
+    }
+    
+    .portal-btn.primary:hover {
+      background: linear-gradient(135deg, var(--weapon-red) 0%, var(--fiery-yellow) 100%);
+      box-shadow: 0 5px 20px rgba(255, 69, 0, 0.3);
+    }
+    
+    .portal-btn i {
+      font-size: 1.2rem;
+    }
+    
+    .warning-section {
+      background: rgba(255, 69, 0, 0.1);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 20px 0;
+      border-left: 3px solid var(--red-orange);
+    }
+    
+    .warning-title {
+      color: var(--lavender-white);
+      font-size: 1rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .warning-title i {
+      color: var(--red-orange);
+    }
+    
+    .error-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 25px;
+      background: linear-gradient(135deg, var(--red-orange) 0%, var(--weapon-red) 100%);
+      border-radius: 10px;
+      border: none;
+      color: var(--lavender-white);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      width: 100%;
+    }
+    
+    .error-btn:hover {
+      background: linear-gradient(135deg, var(--weapon-red) 0%, #ff0000 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px rgba(255, 69, 0, 0.4);
+    }
+    
+    footer {
+      position: relative;
+      width: 100%;
+      color: var(--gray-purple);
+      text-align: center;
+      padding: 15px 0;
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+    
+    .footer-brand {
+      color: var(--electric-cyan);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 5px;
+      display: block;
+      text-shadow: 0 0 6px rgba(0, 238, 255, 0.5);
+      font-family: 'Arial', sans-serif;
+      font-size: 1rem;
+    }
+    
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+    
+    /* Responsive design */
+    @media (min-width: 600px) {
+      .button-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .portal-btn.large {
+        grid-column: span 2;
+      }
+    }
+    
+    @media (max-width: 500px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .portal-card {
+        padding: 20px 15px;
+      }
+      
+      .logo-text {
+        font-size: 1.8rem;
+      }
+      
+      .logo-icon {
+        font-size: 2rem;
+      }
+      
+      .portal-btn {
+        padding: 14px 15px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <i class="fas fa-terminal logo-icon"></i>
+        <div class="logo-text">JINWOO-XMD</div>
+      </div>
+      <div class="tagline">SECURE CONNECTION PORTAL</div>
+    </div>
+    
+    <div class="portal-card">
+      <div class="button-grid">
+        <a href="/qr" class="portal-btn">
+          <i class="fas fa-qrcode"></i>
+          <span>QR CODE SCANNER</span>
+        </a>
+        
+        <a href="/pair" class="portal-btn">
+          <i class="fas fa-key"></i>
+          <span>PAIRING CODE</span>
+        </a>
+        
+        <a href="https://github.com/JaydenJava/JINWOO-XMD/fork" class="portal-btn" target="_blank">
+          <i class="fab fa-github"></i>
+          <span>FORK JINWOO-XMD</span>
+        </a>
+        
+        <a href="https://whatsapp.com/channel/0029Vb6FtUCIiRoldfIYio19" class="portal-btn" target="_blank">
+          <i class="fab fa-whatsapp"></i>
+          <span>WHATSAPP CHANNEL</span>
+        </a>
+      </div>
+      
+      <div class="warning-section">
+        <div class="warning-title">
+          <i class="fas fa-exclamation-triangle"></i>
+          EXPERIENCING ANY ISSUES?
+        </div>
+        <p style="color: var(--gray-purple); font-size: 0.9rem; margin-bottom: 10px;">
+          If you encounter any problems with the connection system, click the button below to report the issue.
+        </p>
+        <a href="https://wa.me/256745944178" class="error-btn" target="_blank">
+          <i class="fas fa-bug"></i>
+          <span>REPORT ERROR</span>
+        </a>
+      </div>
+    </div>
+    
+    <footer>
+      <div>JINWOO-XMD CONNECTION SYSTEM</div>
+      <div class="footer-brand">POWERED BY Jᴀʏᴅᴇɴ Jᴀᴠᴀ</div>
+      <div style="margin-top: 8px; font-size: 0.8rem; color: var(--gray-purple);">
+        &copy; <span id="currentYear"></span> - All Rights Reserved
+      </div>
+    </footer>
+  </div>
+  
+  <script>
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    
+    // Add hover sound effect simulation
+    const buttons = document.querySelectorAll('.portal-btn, .error-btn');
+    buttons.forEach(button => {
+      button.addEventListener('mouseenter', function() {
+        // You could add a sound effect here if desired
+        this.style.transition = 'all 0.2s ease';
+      });
+    });
+    
+    // Add page load animation
+    document.addEventListener('DOMContentLoaded', function() {
+      const portalCard = document.querySelector('.portal-card');
+      portalCard.style.opacity = '0';
+      portalCard.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        portalCard.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        portalCard.style.opacity = '1';
+        portalCard.style.transform = 'translateY(0)';
+      }, 300);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JINWOO-XMD • PAIR CONNECTION</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --deep-cobalt: #0a1128;
+      --electric-cyan: #00eeff;
+      --violet-glow: #6a5acd;
+      --black-silhouette: #0a0a0f;
+      --gray-purple: #8a7f9e;
+      --lavender-white: #e6e6fa;
+      --red-orange: #ff4500;
+      --fiery-yellow: #ffcc00;
+      --weapon-red: #ff3300;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+    }
+    
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: var(--deep-cobalt);
+      background-image: 
+        url('https://files.catbox.moe/x1onpj.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Reduced overlay for maximum background visibility */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 17, 40, 0.15); /* Very transparent overlay */
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 5px;
+    }
+    
+    .logo-icon {
+      font-size: 2rem;
+      color: var(--electric-cyan);
+      filter: drop-shadow(0 0 8px var(--electric-cyan));
+    }
+    
+    .logo-text {
+      font-size: 1.8rem;
+      font-weight: 900;
+      background: linear-gradient(to right, var(--electric-cyan), var(--lavender-white));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(0, 238, 255, 0.4);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    
+    .subtitle {
+      color: var(--gray-purple);
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+    }
+    
+    .pair-card {
+      background: rgba(10, 10, 15, 0.65); /* More transparent */
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(0, 238, 255, 0.25);
+      box-shadow: 
+        0 0 20px rgba(0, 238, 255, 0.15),
+        inset 0 0 20px rgba(106, 90, 205, 0.1),
+        0 8px 25px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px); /* Reduced blur */
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+    
+    .card-title {
+      color: var(--lavender-white);
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .card-title i {
+      color: var(--electric-cyan);
+    }
+    
+    .card-description {
+      color: var(--gray-purple);
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    .input-section {
+      margin-bottom: 15px;
+    }
+    
+    .input-label {
+      color: var(--gray-purple);
+      font-size: 0.8rem;
+      margin-bottom: 5px;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .input-container {
+      display: flex;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 238, 255, 0.3);
+      box-shadow: 0 0 10px rgba(0, 238, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .input-container:focus-within {
+      border-color: var(--electric-cyan);
+      box-shadow: 0 0 20px rgba(0, 238, 255, 0.3);
+    }
+    
+    .input-container input {
+      flex: 1;
+      background: rgba(20, 20, 30, 0.7);
+      border: none;
+      padding: 12px 15px;
+      color: var(--lavender-white);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+    
+    .input-container input::placeholder {
+      color: rgba(138, 127, 158, 0.6);
+      font-size: 0.9rem;
+    }
+    
+    .input-container input:focus {
+      outline: none;
+      background: rgba(25, 25, 40, 0.8);
+    }
+    
+    .input-container button {
+      background: linear-gradient(135deg, var(--red-orange) 0%, var(--fiery-yellow) 100%);
+      color: var(--black-silhouette);
+      border: none;
+      padding: 12px 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 100px;
+      font-size: 0.85rem;
+    }
+    
+    .input-container button:hover {
+      background: linear-gradient(135deg, var(--weapon-red) 0%, var(--fiery-yellow) 100%);
+      box-shadow: 0 0 15px rgba(255, 69, 0, 0.4);
+    }
+    
+    .result-container {
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    
+    .code-display {
+      background: rgba(20, 20, 30, 0.8);
+      border-radius: 8px;
+      padding: 15px;
+      border: 1px solid var(--electric-cyan);
+      box-shadow: 0 0 15px rgba(0, 238, 255, 0.2);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    
+    .code-display:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(0, 238, 255, 0.3);
+    }
+    
+    .code-display.copied {
+      border-color: var(--fiery-yellow);
+      box-shadow: 0 0 25px rgba(255, 204, 0, 0.4);
+    }
+    
+    .code-label {
+      color: var(--gray-purple);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 5px;
+    }
+    
+    .code-value {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--electric-cyan);
+      letter-spacing: 2px;
+      text-shadow: 0 0 8px rgba(0, 238, 255, 0.5);
+      margin: 5px 0;
+    }
+    
+    .copy-hint {
+      color: var(--gray-purple);
+      font-size: 0.8rem;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    
+    .error-message {
+      background: rgba(255, 69, 0, 0.1);
+      border: 1px solid rgba(255, 69, 0, 0.3);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--lavender-white);
+      font-weight: 600;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.85rem;
+    }
+    
+    .instructions {
+      background: rgba(30, 30, 45, 0.4);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px; /* Reduced spacing as requested */
+      border-left: 3px solid var(--violet-glow);
+    }
+    
+    .instructions h4 {
+      color: var(--lavender-white);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .instructions ul {
+      padding-left: 15px;
+    }
+    
+    .instructions li {
+      color: var(--gray-purple);
+      margin-bottom: 5px;
+      line-height: 1.3;
+      font-size: 0.8rem;
+    }
+    
+    .footer {
+      text-align: center;
+      color: var(--gray-purple);
+      margin-top: 15px;
+      font-size: 0.8rem;
+    }
+    
+    .footer-brand {
+      color: var(--electric-cyan);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 3px;
+      display: block;
+      text-shadow: 0 0 6px rgba(0, 238, 255, 0.5);
+      font-family: 'Arial', sans-serif;
+      font-size: 1rem;
+    }
+    
+    /* Minimal particles for subtle effect */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .particle {
+      position: absolute;
+      background: var(--electric-cyan);
+      border-radius: 50%;
+      opacity: 0;
+      animation: float 20s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.3;
+      }
+      90% {
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateY(-100px) translateX(100px);
+        opacity: 0;
+      }
+    }
+    
+    @media (max-width: 500px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .pair-card {
+        padding: 15px;
+      }
+      
+      .input-container {
+        flex-direction: column;
+      }
+      
+      .input-container button {
+        border-radius: 0 0 8px 8px;
+        padding: 10px;
+      }
+      
+      .input-container input {
+        border-radius: 8px 8px 0 0;
+        padding: 10px 12px;
+      }
+      
+      .logo-text {
+        font-size: 1.5rem;
+      }
+      
+      .code-value {
+        font-size: 1.3rem;
+      }
+      
+      .instructions {
+        padding: 10px;
+        margin-top: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Minimal particles -->
+  <div class="particles" id="particles"></div>
+  
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <i class="fas fa-link logo-icon"></i>
+        <div class="logo-text">JINWOO-XMD</div>
+      </div>
+      <div class="subtitle">PAIR CODE GENERATOR</div>
+    </div>
+    
+    <div class="pair-card">
+      <h2 class="card-title"><i class="fas fa-handshake"></i> SECURE PAIRING</h2>
+      <p class="card-description">Enter your WhatsApp number with country code to generate a secure connection key</p>
+      
+      <div class="input-section">
+        <label class="input-label">Phone Number</label>
+        <div class="input-container">
+          <input placeholder="256745944***" type="number" id="number" name="number">
+          <button id="submit">GENERATE</button>
+        </div>
+      </div>
+      
+      <div id="waiting-message" style="display: none; text-align: center; color: var(--electric-cyan); margin: 10px 0;">
+        <i class="fas fa-spinner fa-spin"></i> Processing...
+      </div>
+      
+      <div class="result-container" id="pair"></div>
+      
+      <div class="instructions">
+        <h4><i class="fas fa-info-circle"></i> Instructions</h4>
+        <ul>
+          <li>Include country code without the + symbol</li>
+          <li>Example: 256745944*** for Uganda numbers</li>
+          <li>Your number is used only for pairing and is not stored</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <div>SECURE CONNECTION SYSTEM</div>
+      <div class="footer-brand">POWERED BY Jᴀʏᴅᴇɴ Jᴀᴠᴀ</div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+  <script>
+    // Create minimal floating particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 8; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.width = `${Math.random() * 3 + 1}px`;
+      particle.style.height = particle.style.width;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 20}s`;
+      particle.style.animationDuration = `${Math.random() * 15 + 15}s`;
+      particle.style.background = i % 2 === 0 ? 'var(--electric-cyan)' : 'var(--violet-glow)';
+      particlesContainer.appendChild(particle);
+    }
+    
+    let a = document.getElementById("pair");
+    let b = document.getElementById("submit");
+    let c = document.getElementById("number");
+    let waitingMessage = document.getElementById("waiting-message");
+
+    async function Copy() {
+      let text = document.getElementById("copy").innerText;
+      let obj = document.getElementById("copy");
+      await navigator.clipboard.writeText(obj.innerText.replace('CODE: ', ''));
+      obj.innerText = "COPIED!";
+      obj.style.color = "var(--fiery-yellow)";
+      
+      let codeDisplay = document.querySelector('.code-display');
+      codeDisplay.classList.add('copied');
+      
+      setTimeout(() => {
+        obj.innerText = text;
+        obj.style.color = "var(--electric-cyan)";
+        codeDisplay.classList.remove('copied');
+      }, 2000);
+    }
+
+    b.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!c.value) {
+        a.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-circle"></i> Please enter your WhatsApp number with country code.</div>';
+      } else if (c.value.replace(/[^0-9]/g, "").length < 11) {
+        a.innerHTML = '<div class="error-message"><i class="fas fa-times-circle"></i> Invalid number format. Please check and try again.</div>';
+      } else {
+        const bc = c.value.replace(/[^0-9]/g, "");
+        let bb = "";
+        let bbc = "";
+        const cc = bc.split('');
+        cc.map(a => {
+          bbc += a;
+          if (bbc.length == 3) {
+            bb += " " + a;
+          } else if (bbc.length == 8) {
+            bb += " " + a;
+          } else {
+            bb += a;
+          }
+        });
+        c.type = "text";
+        c.value = "+" + bb;
+        c.style.color = "var(--electric-cyan)";
+        c.style.fontWeight = "bold";
+        
+        waitingMessage.style.display = "block";
+        a.innerHTML = '<div style="text-align: center; color: var(--electric-cyan); padding: 15px;"><i class="fas fa-cog fa-spin"></i><br>Generating secure pairing code...</div>';
+        
+        try {
+          let { data } = await axios(`/code?number=${bc}`);
+          let code = data.code || "SERVICE_UNAVAILABLE";
+          
+          waitingMessage.style.display = "none";
+          
+          a.innerHTML = `
+            <div class="code-display" onclick="Copy()">
+              <div class="code-label">Your Connection Key</div>
+              <div id="copy" class="code-value">${code}</div>
+              <div class="copy-hint">
+                <i class="fas fa-mouse-pointer"></i> Click to copy code
+              </div>
+            </div>
+          `;
+        } catch (error) {
+          waitingMessage.style.display = "none";
+          a.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Connection error. Please try again.</div>';
+        }
+      }
+    });
+    
+    c.addEventListener('input', function() {
+      if (c.value.length > 0) {
+        c.parentElement.style.boxShadow = '0 0 20px rgba(0, 238, 255, 0.3)';
+      } else {
+        c.parentElement.style.boxShadow = '0 0 10px rgba(0, 238, 255, 0.1)';
+      }
+    });
+  </script>
+</body>
+</html>

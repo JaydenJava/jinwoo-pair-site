@@ -1,0 +1,52 @@
+{
+  "name": "jinwoo-xmd",
+  "version": "1.0.0",
+  "description": "WhatsApp Bot Pairing System with QR and Code Authentication",
+  "main": "index.js",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js",
+    "test": "echo \"No tests specified\" && exit 0",
+    "railway:deploy": "railway up",
+    "railway:logs": "railway logs",
+    "railway:variables": "railway variables"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "pairing",
+    "qr",
+    "authentication",
+    "jinwoo"
+  ],
+  "author": "Jayden Java",
+  "license": "MIT",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.17",
+    "@adiwajshing/keyed-db": "^0.2.4",
+    "express": "^4.18.1",
+    "body-parser": "^1.20.1",
+    "qrcode": "^1.5.3",
+    "axios": "^1.6.0",
+    "pino": "^8.1.0",
+    "phone": "^3.1.30",
+    "awesome-phonenumber": "^2.64.0",
+    "async-mutex": "^0.4.1",
+    "compression": "^1.7.4",
+    "helmet": "^7.0.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JaydenJava/JINWOO-XMD.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JaydenJava/JINWOO-XMD/issues"
+  },
+  "homepage": "https://github.com/JaydenJava/JINWOO-XMD#readme"
+}
