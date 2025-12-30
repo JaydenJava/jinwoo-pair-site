@@ -1,7 +1,4 @@
-## **File 7: `README.md` - Updated for Railway Deployment**
-
-```markdown
-# JINWOO-XMD 🤖
+JINWOO-XMD 🤖
 
 ![JINWOO-XMD Banner](https://files.catbox.moe/x1onpj.jpg)
 
